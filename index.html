@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rodar | Comunidad de carros</title>
+
+<style>
+
+:root{
+  --bg:#0f1115;
+  --panel:#171a20;
+  --panel2:#1d2129;
+  --text:#f4f5f7;
+  --muted:#9da3ad;
+  --line:#2a2f39;
+  --accent:#ff6b35;
+  --accent2:#ff8a5b;
+  --blue:#5b9cff;
+  --danger:#e45b5b;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+/* ================= HEADER ================= */
+
+header{
+  height:64px;
+  position:sticky;
+  top:0;
+  z-index:10;
+
+  background:rgba(15,17,21,.97);
+  border-bottom:1px solid var(--line);
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 6%;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.logo span{
+  color:var(--accent);
+}
+
+.top-nav{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.top-nav button{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+
+  padding:9px 12px;
+  border-radius:8px;
+
+  cursor:pointer;
+}
+
+.top-nav button:hover,
+.top-nav button.active{
+  background:var(--panel2);
+  color:white;
+}
+
+.avatar{
+  width:36px;
+  height:36px;
+
+  border-radius:50%;
+  background:#303641;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-weight:bold;
+}
+
+/* ================= LAYOUT ================= */
+
+.layout{
+  width:min(1180px,92%);
+  margin:25px auto;
+
+  display:grid;
+  grid-template-columns:230px minmax(0,650px) 250px;
+
+  gap:22px;
+}
+
+aside{
+  position:sticky;
+  top:89px;
+  height:max-content;
+}
+
+.card,
+.side-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+}
+
+/* ================= LEFT ================= */
+
+.side-card{
+  padding:14px;
+  margin-bottom:14px;
+}
+
+.profile-mini{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.profile-mini small{
+  color:var(--muted);
+}
+
+.side-title{
+  color:var(--muted);
+  font-size:11px;
+
+  text-transform:uppercase;
+  letter-spacing:.8px;
+
+  margin:5px 8px 10px;
+}
+
+.side-link{
+  width:100%;
+
+  border:0;
+  background:transparent;
+
+  color:white;
+
+  padding:11px 10px;
+  border-radius:8px;
+
+  text-align:left;
+  cursor:pointer;
+}
+
+.side-link:hover,
+.side-link.active{
+  background:var(--panel2);
+}
+
+.side-link span{
+  color:var(--muted);
+  margin-left:7px;
+}
+
+/* ================= COMPOSER ================= */
+
+.composer{
+  padding:15px;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  margin-bottom:16px;
+}
+
+.composer-input{
+  flex:1;
+
+  background:var(--panel2);
+  border:1px solid var(--line);
+
+  color:var(--muted);
+
+  padding:12px 15px;
+
+  border-radius:25px;
+
+  cursor:pointer;
+  text-align:left;
+}
+
+.orange-btn{
+  border:0;
+  background:var(--accent);
+  color:white;
+
+  font-weight:bold;
+
+  padding:10px 15px;
+  border-radius:8px;
+
+  cursor:pointer;
+}
+
+.orange-btn:hover{
+  background:var(--accent2);
+}
+
+/* ================= POSTS ================= */
+
+.post{
+  margin-bottom:17px;
+  overflow:hidden;
+}
+
+.post-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:15px 16px 11px;
+}
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.user-info strong{
+  font-size:14px;
+}
+
+.user-info p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.verified{
+  color:var(--blue);
+  font-size:11px;
+  margin-left:4px;
+}
+
+.post-menu{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+
+  cursor:pointer;
+  font-size:18px;
+}
+
+.post-image{
+  width:100%;
+  height:360px;
+
+  object-fit:cover;
+
+  display:block;
+  background:#242832;
+}
+
+.post-body{
+  padding:13px 16px 15px;
+}
+
+.tags{
+  color:var(--accent2);
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.post-text{
+  font-size:14px;
+  line-height:1.5;
+}
+
+.post-actions{
+  display:flex;
+  align-items:center;
+  gap:5px;
+
+  border-top:1px solid var(--line);
+
+  margin-top:13px;
+  padding-top:10px;
+}
+
+.action{
+  border:0;
+  background:transparent;
+
+  color:var(--muted);
+
+  padding:8px 10px;
+  border-radius:7px;
+
+  cursor:pointer;
+}
+
+.action:hover{
+  background:var(--panel2);
+  color:white;
+}
+
+.action.liked{
+  color:var(--accent);
+}
+
+/* ================= RIGHT ================= */
+
+.right-title{
+  color:var(--muted);
+
+  font-size:12px;
+  text-transform:uppercase;
+
+  letter-spacing:.8px;
+
+  margin-bottom:12px;
+}
+
+.event{
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.event-date{
+  color:var(--accent);
+  font-size:12px;
+  font-weight:bold;
+}
+
+.event h3{
+  font-size:15px;
+  margin:7px 0;
+}
+
+.event p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.tip{
+  padding:15px;
+
+  color:var(--muted);
+
+  font-size:12px;
+  line-height:1.5;
+}
+
+.tip strong{
+  display:block;
+  color:white;
+  margin-bottom:6px;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,.75);
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  z-index:50;
+
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(600px,100%);
+  max-height:90vh;
+
+  overflow:auto;
+
+  background:var(--panel);
+
+  border:1px solid var(--line);
+  border-radius:14px;
+
+  padding:22px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.modal-head p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:4px;
+}
+
+.close{
+  border:0;
+  background:transparent;
+
+  color:var(--muted);
+
+  font-size:25px;
+  cursor:pointer;
+}
+
+label{
+  display:block;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+  margin:13px 0 6px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+
+  background:var(--panel2);
+
+  color:white;
+
+  border:1px solid var(--line);
+
+  border-radius:8px;
+
+  padding:11px;
+
+  outline:none;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--accent);
+}
+
+/* ================= SUBIR FOTO ================= */
+
+.upload-box{
+
+  border:2px dashed #3a404c;
+
+  background:var(--panel2);
+
+  border-radius:12px;
+
+  padding:35px 20px;
+
+  text-align:center;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.upload-box:hover{
+  border-color:var(--accent);
+  background:#232832;
+}
+
+.upload-icon{
+  font-size:35px;
+  margin-bottom:10px;
+}
+
+.upload-box strong{
+  display:block;
+  margin-bottom:6px;
+}
+
+.upload-box p{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.image-preview-container{
+  display:none;
+  margin-top:12px;
+}
+
+.image-preview{
+  width:100%;
+  max-height:320px;
+
+  object-fit:cover;
+
+  border-radius:10px;
+}
+
+.remove-image{
+  margin-top:8px;
+
+  background:var(--panel2);
+
+  color:white;
+
+  border:1px solid var(--line);
+
+  padding:8px 12px;
+
+  border-radius:7px;
+
+  cursor:pointer;
+}
+
+/* ================= PRIVACIDAD ================= */
+
+.privacy{
+  margin:15px 0;
+
+  padding:13px;
+
+  background:var(--panel2);
+
+  border-radius:8px;
+
+  font-size:12px;
+
+  color:var(--muted);
+}
+
+.privacy-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-top:9px;
+}
+
+.privacy-row input{
+  width:auto;
+}
+
+/* ================= WARNING ================= */
+
+.warning{
+  display:none;
+
+  margin-top:12px;
+
+  padding:13px;
+
+  background:#2a1d17;
+
+  border:1px solid #7d4b32;
+
+  border-radius:8px;
+
+  color:#ffd5c5;
+
+  font-size:12px;
+
+  line-height:1.5;
+}
+
+.warning.show{
+  display:block;
+}
+
+/* ================= ERROR ================= */
+
+.error{
+  display:none;
+
+  margin-top:10px;
+
+  padding:10px;
+
+  background:#321d1d;
+
+  border:1px solid #6e3636;
+
+  border-radius:8px;
+
+  color:#ffbaba;
+
+  font-size:12px;
+}
+
+.error.show{
+  display:block;
+}
+
+/* ================= BOTONES ================= */
+
+.submit-row{
+  display:flex;
+  justify-content:flex-end;
+
+  gap:10px;
+
+  margin-top:16px;
+}
+
+.cancel{
+  background:var(--panel2);
+
+  color:white;
+
+  border:1px solid var(--line);
+
+  border-radius:8px;
+
+  padding:10px 15px;
+
+  cursor:pointer;
+}
+
+.notice{
+  display:none;
+
+  background:#17251f;
+
+  border:1px solid #28533f;
+
+  color:#b8efd5;
+
+  padding:11px 13px;
+
+  border-radius:8px;
+
+  font-size:12px;
+
+  margin-bottom:15px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+  .layout{
+    grid-template-columns:190px minmax(0,1fr);
+  }
+
+  .right{
+    display:none;
+  }
+
+}
+
+@media(max-width:700px){
+
+  header{
+    padding:0 4%;
+  }
+
+  .top-nav button:not(.active){
+    display:none;
+  }
+
+  .layout{
+    display:block;
+    width:94%;
+  }
+
+  .left{
+    display:none;
+  }
+
+  .post-image{
+    height:280px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+  <div class="logo">
+    ROD<span>AR</span>
+  </div>
+
+  <nav class="top-nav">
+
+    <button class="active">
+      Inicio
+    </button>
+
+    <button>
+      Explorar
+    </button>
+
+    <button>
+      Eventos
+    </button>
+
+    <div class="avatar">
+      M
+    </div>
+
+  </nav>
+
+</header>
+
+
+<div class="layout">
+
+
+<!-- =====================================================
+     BARRA IZQUIERDA
+===================================================== -->
+
+<aside class="left">
+
+  <div class="side-card">
+
+    <div class="profile-mini">
+
+      <div class="avatar">
+        M
+      </div>
+
+      <div>
+
+        <strong>
+          Mateo
+        </strong>
+
+        <br>
+
+        <small>
+          @mateo
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <button class="side-link active">
+      ⌂ <span>Inicio</span>
+    </button>
+
+    <button class="side-link">
+      ⌕ <span>Explorar</span>
+    </button>
+
+    <button class="side-link">
+      ◉ <span>Eventos</span>
+    </button>
+
+    <button class="side-link">
+      ★ <span>Guardados</span>
+    </button>
+
+  </div>
+
+
+  <div class="side-card">
+
+    <div class="side-title">
+      Bienestar digital
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);line-height:1.5">
+
+      Tú decides qué información mostrar.
+      Rodar está diseñado para que compartir
+      sobre carros no signifique compartir
+      información personal.
+
+    </p>
+
+  </div>
+
+</aside>
+
+
+<!-- =====================================================
+     FEED
+===================================================== -->
+
+<main>
+
+  <div id="notice" class="notice">
+    Publicación creada correctamente.
+  </div>
+
+
+  <!-- CREAR PUBLICACIÓN -->
+
+  <div class="card composer">
+
+    <div class="avatar">
+      M
+    </div>
+
+    <button
+      class="composer-input"
+      id="openComposer"
+    >
+      ¿Qué estás rodando hoy?
+    </button>
+
+    <button
+      class="orange-btn"
+      id="openComposer2"
+    >
+      Publicar
+    </button>
+
+  </div>
+
+
+  <div id="feed">
+
+
+    <!-- =================================================
+         PUBLICACIÓN USE2
+    ================================================== -->
+
+    <article class="card post">
+
+      <div class="post-head">
+
+        <div class="user">
+
+          <div class="avatar">
+            U
+          </div>
+
+          <div class="user-info">
+
+            <strong>
+
+              use2
+
+              <span class="verified">
+                ✓ Verificado
+              </span>
+
+            </strong>
+
+            <p>
+              Hace 2 h · Ciudad de México
+            </p>
+
+          </div>
+
+        </div>
+
+        <button class="post-menu">
+          •••
+        </button>
+
+      </div>
+
+
+      <!-- ******** IMAGEN DE USE2 ******** -->
+
+      <img
+        class="post-image"
+        src="Imagenes/Hachiroku.jpg"
+        alt="Auto de use2"
+      >
+
+      <!-- ******** FIN IMAGEN USE2 ******** -->
+
+
+      <div class="post-body">
+
+        <div class="tags">
+          #JDM #Modificaciones #Rodar
+        </div>
+
+        <p class="post-text">
+
+          Después de varios meses por fin terminé
+          esta modificación.
+
+          ¿Qué opinan de cómo quedó?
+
+        </p>
+
+
+        <div class="post-actions">
+
+          <button class="action like">
+            ♥ <span>32</span>
+          </button>
+
+          <button class="action">
+            💬 7
+          </button>
+
+          <button class="action">
+            ↗ Compartir
+          </button>
+
+          <button class="action">
+            ☆ Guardar
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- =================================================
+         SEGUNDA PUBLICACIÓN
+    ================================================== -->
+
+    <article class="card post">
+
+      <div class="post-head">
+
+        <div class="user">
+
+          <div class="avatar">
+            A
+          </div>
+
+          <div class="user-info">
+
+            <strong>
+              AlexR
+            </strong>
+
+            <p>
+              Hace 5 h · Evento
+            </p>
+
+          </div>
+
+        </div>
+
+        <button class="post-menu">
+          •••
+        </button>
+
+      </div>
+
+
+      <!-- ******** IMAGEN DEL EVENTO ******** -->
+
+      <img
+        class="post-image"
+        src="Imagenes/carmeet.jpg"
+        alt="Evento de carros"
+      >
+
+      <!-- ******** FIN IMAGEN EVENTO ******** -->
+
+
+      <div class="post-body">
+
+        <div class="tags">
+          #Evento #CarMeet #CDMX
+        </div>
+
+        <p class="post-text">
+
+          Exposición este domingo.
+          La información del evento fue revisada
+          antes de publicarse.
+
+        </p>
+
+
+        <div class="post-actions">
+
+          <button class="action like">
+            ♥ <span>18</span>
+          </button>
+
+          <button class="action">
+            💬 3
+          </button>
+
+          <button class="action">
+            ↗ Compartir
+          </button>
+
+          <button class="action">
+            ☆ Guardar
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- AQUÍ APARECEN LAS PUBLICACIONES NUEVAS -->
+
+    <div id="newPosts"></div>
+
+  </div>
+
+</main>
+
+
+<!-- =====================================================
+     BARRA DERECHA
+===================================================== -->
+
+<aside class="right">
+
+  <div class="right-title">
+    Próximos eventos
+  </div>
+
+
+  <div class="card event">
+
+    <div class="event-date">
+      DOM · 30 AGO
+    </div>
+
+    <h3>
+      Car Meet Rodar
+    </h3>
+
+    <p>
+      Exposición de autos y comunidad.
+      Información revisada por Rodar.
+    </p>
+
+    <button
+      class="orange-btn"
+      style="margin-top:10px"
+    >
+      Ver evento
+    </button>
+
+  </div>
+
+
+  <div class="card event">
+
+    <div class="event-date">
+      SÁB · 05 SEP
+    </div>
+
+    <h3>
+      Ruta de montaña
+    </h3>
+
+    <p>
+      Ruta organizada por miembros
+      de la comunidad.
+    </p>
+
+    <button
+      class="orange-btn"
+      style="margin-top:10px"
+    >
+      Ver evento
+    </button>
+
+  </div>
+
+
+  <div class="card tip">
+
+    <strong>
+      🛡️ Consejo de Rodar
+    </strong>
+
+    Evita compartir placas,
+    direcciones, teléfonos o
+    ubicaciones exactas.
+
+  </div>
+
+</aside>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL CREAR PUBLICACIÓN
+===================================================== -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+
+    <div class="modal-head">
+
+      <div>
+
+        <h2>
+          Crear publicación
+        </h2>
+
+        <p>
+          Comparte tu auto,
+          modificación, ruta,
+          evento o conocimiento.
+
+        </p>
+
+      </div>
+
+      <button
+        class="close"
+        id="closeModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="postForm">
+
+
+      <!-- ================= FOTO ================= -->
+
+      <label>
+        Foto
+      </label>
+
+
+      <div
+        class="upload-box"
+        id="uploadBox"
+      >
+
+        <div class="upload-icon">
+          📷
+        </div>
+
+        <strong>
+          Arrastra una imagen aquí
+        </strong>
+
+        <p>
+          o haz clic para seleccionar una
+        </p>
+
+
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/*"
+          hidden
+        >
+
+      </div>
+
+
+      <div
+        class="image-preview-container"
+        id="imagePreviewContainer"
+      >
+
+        <img
+          id="imagePreview"
+          class="image-preview"
+        >
+
+        <button
+          type="button"
+          class="remove-image"
+          id="removeImage"
+        >
+          Quitar imagen
+        </button>
+
+      </div>
+
+
+      <!-- ================= TITULO ================= -->
+
+      <label>
+        Título
+      </label>
+
+      <input
+        id="title"
+        type="text"
+        placeholder="Ej. Mi nuevo proyecto JDM"
+        required
+      >
+
+
+      <!-- ================= DESCRIPCIÓN ================= -->
+
+      <label>
+        Descripción
+      </label>
+
+      <textarea
+        id="description"
+        placeholder="Cuéntale a la comunidad sobre tu publicación..."
+        required
+      ></textarea>
+
+
+      <!-- ================= CATEGORIA ================= -->
+
+      <label>
+        Categoría
+      </label>
+
+      <select id="category">
+
+        <option>
+          Carro
+        </option>
+
+        <option>
+          Modificación
+        </option>
+
+        <option>
+          Evento
+        </option>
+
+        <option>
+          Ruta
+        </option>
+
+        <option>
+          Reseña
+        </option>
+
+        <option>
+          Conocimiento
+        </option>
+
+      </select>
+
+
+      <!-- ================= PRIVACIDAD ================= -->
+
+      <div class="privacy">
+
+        <strong style="color:white">
+          Privacidad
+        </strong>
+
+
+        <div class="privacy-row">
+
+          <span>
+            Mostrar ubicación
+          </span>
+
+          <input
+            id="showLocation"
+            type="checkbox"
+          >
+
+        </div>
+
+
+        <div class="privacy-row">
+
+          <span>
+            Mostrar placas
+          </span>
+
+          <input
+            id="showPlates"
+            type="checkbox"
+          >
+
+        </div>
+
+
+        <div class="privacy-row">
+
+          <span>
+            Mostrar mi nombre real
+          </span>
+
+          <input
+            id="showName"
+            type="checkbox"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= ERROR ================= -->
+
+      <div
+        class="error"
+        id="error"
+      ></div>
+
+
+      <!-- ================= ADVERTENCIA ================= -->
+
+      <div
+        class="warning"
+        id="warning"
+      >
+
+        <strong>
+          ⚠️ ¿Deseas publicar esto?
+        </strong>
+
+        <br><br>
+
+        Revisa tu publicación antes de compartirla.
+
+        <br><br>
+
+        Evita publicar:
+
+        <br>
+
+        • Placas
+
+        <br>
+
+        • Dirección exacta
+
+        <br>
+
+        • Teléfono
+
+        <br>
+
+        • Información personal
+
+        <br>
+
+        • Ubicación en tiempo real
+
+        <br><br>
+
+        Recuerda que lo que publicas puede formar
+        parte de tu huella digital.
+
+      </div>
+
+
+      <!-- ================= BOTONES ================= -->
+
+      <div class="submit-row">
+
+        <button
+          type="button"
+          class="cancel"
+          id="cancelBtn"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="orange-btn"
+        >
+          Revisar y publicar
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+const modal =
+  document.getElementById("modal");
+
+
+document
+  .getElementById("openComposer")
+  .addEventListener("click",openModal);
+
+
+document
+  .getElementById("openComposer2")
+  .addEventListener("click",openModal);
+
+
+function openModal(){
+
+  modal.classList.add("show");
+
+}
+
+
+document
+  .getElementById("closeModal")
+  .addEventListener("click",closeModal);
+
+
+document
+  .getElementById("cancelBtn")
+  .addEventListener("click",closeModal);
+
+
+function closeModal(){
+
+  modal.classList.remove("show");
+
+}
+
+
+modal.addEventListener("click",(e)=>{
+
+  if(e.target === modal){
+
+    closeModal();
+
+  }
+
+});
+
+
+/* =====================================================
+   SUBIR IMAGEN
+===================================================== */
+
+const uploadBox =
+  document.getElementById("uploadBox");
+
+const photoInput =
+  document.getElementById("photoInput");
+
+const imagePreview =
+  document.getElementById("imagePreview");
+
+const imagePreviewContainer =
+  document.getElementById("imagePreviewContainer");
+
+const removeImage =
+  document.getElementById("removeImage");
+
+
+let selectedImage = "";
+
+
+/* CLICK */
+
+uploadBox.addEventListener("click",()=>{
+
+  photoInput.click();
+
+});
+
+
+/* SELECCIONAR */
+
+photoInput.addEventListener("change",()=>{
+
+  const file =
+    photoInput.files[0];
+
+  if(file){
+
+    showImage(file);
+
+  }
+
+});
+
+
+/* ARRASTRAR */
+
+uploadBox.addEventListener("dragover",(e)=>{
+
+  e.preventDefault();
+
+  uploadBox.style.borderColor =
+    "#ff6b35";
+
+});
+
+
+/* SALIR */
+
+uploadBox.addEventListener("dragleave",()=>{
+
+  uploadBox.style.borderColor =
+    "#3a404c";
+
+});
+
+
+/* SOLTAR */
+
+uploadBox.addEventListener("drop",(e)=>{
+
+  e.preventDefault();
+
+  uploadBox.style.borderColor =
+    "#3a404c";
+
+
+  const file =
+    e.dataTransfer.files[0];
+
+
+  if(
+    file &&
+    file.type.startsWith("image/")
+  ){
+
+    showImage(file);
+
+  }
+
+});
+
+
+/* MOSTRAR */
+
+function showImage(file){
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload = function(e){
+
+    selectedImage =
+      e.target.result;
+
+
+    imagePreview.src =
+      selectedImage;
+
+
+    imagePreviewContainer.style.display =
+      "block";
+
+  };
+
+
+  reader.readAsDataURL(file);
+
+}
+
+
+/* QUITAR */
+
+removeImage.addEventListener("click",()=>{
+
+  selectedImage = "";
+
+  photoInput.value = "";
+
+  imagePreview.src = "";
+
+  imagePreviewContainer.style.display =
+    "none";
+
+});
+
+
+/* =====================================================
+   LIKES
+===================================================== */
+
+document
+  .querySelectorAll(".like")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      button.classList.toggle("liked");
+
+
+      const number =
+        button.querySelector("span");
+
+
+      let count =
+        parseInt(number.textContent);
+
+
+      if(button.classList.contains("liked")){
+
+        count++;
+
+      }else{
+
+        count--;
+
+      }
+
+
+      number.textContent =
+        count;
+
+    });
+
+  });
+
+
+/* =====================================================
+   FILTRO DE SEGURIDAD
+===================================================== */
+
+const forbiddenWords = [
+
+  "idiota",
+  "estupido",
+  "estúpido",
+  "pendejo",
+  "pendeja",
+  "puto",
+  "puta",
+  "imbecil",
+  "imbécil"
+
+];
+
+
+function containsBadWord(text){
+
+  const lower =
+    text.toLowerCase();
+
+
+  return forbiddenWords.some(word =>
+    lower.includes(word)
+  );
+
+}
+
+
+function containsPersonalData(text){
+
+  const phone =
+    /\b\d{8,10}\b/;
+
+  const address =
+    /\b(calle|avenida|av\.|domicilio|casa)\b/i;
+
+
+  return phone.test(text) ||
+         address.test(text);
+
+}
+
+
+/* =====================================================
+   CREAR PUBLICACIÓN
+===================================================== */
+
+const form =
+  document.getElementById("postForm");
+
+
+const warning =
+  document.getElementById("warning");
+
+
+const error =
+  document.getElementById("error");
+
+
+let warningShown = false;
+
+
+form.addEventListener("submit",(e)=>{
+
+  e.preventDefault();
+
+
+  const title =
+    document.getElementById("title")
+    .value.trim();
+
+
+  const description =
+    document.getElementById("description")
+    .value.trim();
+
+
+  const category =
+    document.getElementById("category")
+    .value;
+
+
+  const showLocation =
+    document.getElementById("showLocation")
+    .checked;
+
+
+  const showPlates =
+    document.getElementById("showPlates")
+    .checked;
+
+
+  const showName =
+    document.getElementById("showName")
+    .checked;
+
+
+  error.classList.remove("show");
+
+
+  /* SIN IMAGEN */
+
+  if(!selectedImage){
+
+    showError(
+      "Agrega una imagen antes de publicar."
+    );
+
+    return;
+
+  }
+
+
+  /* INSULTOS */
+
+  if(
+    containsBadWord(title) ||
+    containsBadWord(description)
+  ){
+
+    showError(
+      "Tu publicación contiene lenguaje ofensivo. Modifica el texto antes de publicarlo."
+    );
+
+    return;
+
+  }
+
+
+  /* DATOS PERSONALES */
+
+  if(
+    containsPersonalData(title) ||
+    containsPersonalData(description)
+  ){
+
+    showError(
+      "Parece que incluiste información personal. Revisa tu publicación antes de continuar."
+    );
+
+    return;
+
+  }
+
+
+  /* ADVERTENCIA */
+
+  if(!warningShown){
+
+    warning.classList.add("show");
+
+    warningShown = true;
+
+    return;
+
+  }
+
+
+  /* CREAR POST */
+
+  const article =
+    document.createElement("article");
+
+
+  article.className =
+    "card post";
+
+
+  const author =
+    showName
+    ? "Mateo"
+    : "Usuario de Rodar";
+
+
+  const location =
+    showLocation
+    ? "Ubicación visible"
+    : "Ubicación oculta";
+
+
+  const plates =
+    showPlates
+    ? "Placas visibles"
+    : "Placas ocultas";
+
+
+  article.innerHTML = `
+
+    <div class="post-head">
+
+      <div class="user">
+
+        <div class="avatar">
+          M
+        </div>
+
+        <div class="user-info">
+
+          <strong>
+            ${escapeHTML(author)}
+          </strong>
+
+          <p>
+            Ahora ·
+            ${escapeHTML(category)}
+            ·
+            ${location}
+          </p>
+
+        </div>
+
+      </div>
+
+      <button class="post-menu delete-post">
+        •••
+      </button>
+
+    </div>
+
+
+    <img
+      class="post-image"
+      src="${selectedImage}"
+      alt="Publicación de Rodar"
+    >
+
+
+    <div class="post-body">
+
+      <div class="tags">
+        #${escapeHTML(category)}
+        #Rodar
+      </div>
+
+
+      <p class="post-text">
+
+        <strong>
+          ${escapeHTML(title)}
+        </strong>
+
+        <br><br>
+
+        ${escapeHTML(description)}
+
+      </p>
+
+
+      <div
+        style="
+        margin-top:10px;
+        font-size:11px;
+        color:#9da3ad;
+        "
+      >
+
+        🛡️ ${plates}
+
+      </div>
+
+
+      <div class="post-actions">
+
+        <button class="action like">
+          ♥ <span>0</span>
+        </button>
+
+        <button class="action">
+          💬 0
+        </button>
+
+        <button class="action">
+          ↗ Compartir
+        </button>
+
+        <button
+          class="action delete-post"
+        >
+          🗑 Borrar
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("newPosts")
+    .prepend(article);
+
+
+  /* LIKE NUEVO */
+
+  const likeButton =
+    article.querySelector(".like");
+
+
+  likeButton.addEventListener("click",()=>{
+
+    likeButton.classList.toggle("liked");
+
+
+    const number =
+      likeButton.querySelector("span");
+
+
+    number.textContent =
+      likeButton.classList.contains("liked")
+      ? "1"
+      : "0";
+
+  });
+
+
+  /* BORRAR */
+
+  article
+    .querySelectorAll(".delete-post")
+    .forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        article.remove();
+
+      });
+
+    });
+
+
+  /* RESET */
+
+  form.reset();
+
+  selectedImage = "";
+
+  photoInput.value = "";
+
+  imagePreview.src = "";
+
+  imagePreviewContainer.style.display =
+    "none";
+
+  warning.classList.remove("show");
+
+  warningShown = false;
+
+  closeModal();
+
+
+  /* AVISO */
+
+  const notice =
+    document.getElementById("notice");
+
+
+  notice.textContent =
+    "✓ Publicación creada. Tú tienes el control de tu huella digital.";
+
+
+  notice.style.display =
+    "block";
+
+
+  setTimeout(()=>{
+
+    notice.style.display =
+      "none";
+
+  },3500);
+
+});
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message){
+
+  error.textContent =
+    "⚠️ " + message;
+
+  error.classList.add("show");
+
+}
+
+
+/* =====================================================
+   PROTEGER TEXTO
+===================================================== */
+
+function escapeHTML(text){
+
+  return text.replace(
+    /[&<>"']/g,
+
+    char=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+
+    }[char])
+
+  );
+
+}
+
+</script>
+
+</body>
+</html>
